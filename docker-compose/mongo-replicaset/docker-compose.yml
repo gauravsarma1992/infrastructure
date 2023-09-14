@@ -1,0 +1,18 @@
+version: '2'
+services:
+    mongodb:
+        hostname: mongodb
+        container_name: mongodb
+        image: "mongo:4.4"
+        ports:
+            - "27017:27017"
+        volumes:
+            - database-data:/data/db
+        command: ["--replSet", "dbrs", "--bind_ip_all"]
+        healthcheck:
+          test: test $$(echo "rs.initiate({_id:'dbrs',members:[{_id:0,host:\"mongodb:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+          interval: 10s
+          start_period: 30s
+        restart: always
+volumes:
+    database-data:
