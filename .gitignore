@@ -1,0 +1,4 @@
+*.terraform*
+*.tfstate*
+*.ip
+*set_env_vars.sh
